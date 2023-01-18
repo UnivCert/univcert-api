@@ -1,12 +1,8 @@
 package com.univcert.backend;
 
-package net.sinzak.server.common;
-
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONObject;
-import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.env.Environment;
 
 @Configuration
 @RequiredArgsConstructor

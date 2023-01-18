@@ -24,7 +24,7 @@ public enum UnivMail {  /** 약 62개 **/
     INU("인천","inu"),ITC("인하공전","itc"), INHA("인하","itc"), JNU("전남","jnu"),
     JBNU("전북","jbnu"), CAU("중앙","cau"), CHUNGBUK("충북","chungbuk"), KNOU("한국방송통신","knou"),
     KPU("한국산업기술","kpu"),KARTS("한국예술종합","karts"), HUFS("한국외국어","hufs"), KNSU("한국체육","knsu"),
-    HANYANG("한양","hanyang"), ERICA("한양에리카","hanyang"), HONGIK("홍익","hongik"), DGIST("dgist","dgist"),
+    HANYANG("한양대학교","hanyang"), ERICA("한양에리카","hanyang"), HONGIK("홍익대학교","hongik"), DGIST("dgist","dgist"),
     GIST("gist","gist"),KAIST("카이스트","kaist"), POSTECH("포항공과","postech"), UNIST("unist","unist");
 
     private static final Map<String, UnivMail> UNIV_MAIL_MAP =
@@ -40,7 +40,7 @@ public enum UnivMail {  /** 약 62개 **/
 
     public static String getDomain(String univName) {
         if (UNIV_MAIL_MAP.containsKey(univName)) {
-            return UNIV_MAIL_MAP.get(univName).domain;
+            return UNIV_MAIL_MAP.get(univName).domain+"대학교";
         }
         throw new UnivNotFoundException("존재하지 않는 대학명입니다.");
     }
@@ -51,9 +51,9 @@ public enum UnivMail {  /** 약 62개 **/
 
     public String getDomain() {return domain;}
 
-    public static JSONObject domainCertify(String univ, String email){
-
-    }
+//    public static JSONObject domainCertify(String univ, String email){
+//
+//    }
 
     public static String changeUnivToMail(String mail){
         UnivMail[] univMails = UnivMail.values();
