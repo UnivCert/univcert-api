@@ -1,53 +1,64 @@
 package com.univcert.backend.cert;
 
 import com.univcert.backend.PropertyUtil;
+import com.univcert.backend.cert.dto.CertifyDto;
 import com.univcert.backend.cert.dto.UnivAndEmailDto;
+import com.univcert.backend.error.UserNotFoundException;
+import com.univcert.backend.user.User;
+import com.univcert.backend.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONObject;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 
 @Service
 @RequiredArgsConstructor
 public class CertService {
 
-//    private final JavaMailSender emailSender;
+    private final JavaMailSender emailSender;
+    private final UserRepository userRepository;
     private final CertRepository certRepository;
-
-
-
-//    @Transactional
-//    public JSONObject requestCertify(CertifyDto dto) {
-//
-//    }
 
 
     public JSONObject tryOut(UnivAndEmailDto univDto) {
         String domain = UnivMail.getDomain(univDto.getName());
         if(univDto.getEmail().contains(domain))
             return PropertyUtil.response(true);
-        return PropertyUtil.responseMessage("대학도메인과 일치하지 않는 메일입니다.");
+        return PropertyUtil.responseMessage(univDto.getEmail()+" 메일이 아닙니다.");
     }
 
-//    @Transactional
-//    public JSONObject sendMail(CertifyDto dto) {
-//        SimpleMailMessage message = new SimpleMailMessage();
-//        message.setFrom("sinzakofficial@gmail.com");
-//        message.setTo(mailDto.getAddress());
-//        message.setSubject("신작 : 대학인증 메일 코드를 확인해주세요");
-//        String code = String.valueOf((int)((Math.random()*10 +1) * 1000));
-//        message.setText("인증번호 : "+ code); //1000~9999
-//        emailSender.send(message);
-//        Optional<Cert> existCert = certRepository.findCertByUnivEmail(mailDto.getAddress());
-//        if(existCert.isPresent()){
-//            Cert cert = existCert.get();
-//            cert.updateKey(code);
-//        }
-//        else
-//            certRepository.save(new Cert(mailDto.getAddress(), code, "",false));
-//        return PropertyUtil.response(true);
-//    }
+    @Transactional
+    public JSONObject requestCertify(CertifyDto dto) {
+        User user = userRepository.findByAPI_KEYFetchCertList(dto.getAPI_KEY()).orElseThrow(UserNotFoundException::new);
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom("sinzakofficial@gmail.com");
+        message.setTo(dto.getEmail());
+        message.setSubject(user.getTeamName()+" : 대학인증 메일 코드를 확인해주세요");
+        String code = String.valueOf((int)((Math.random()*10 +1) * 1000));
+        message.setText(user.getTeamName()+"에서 요청한 인증번호 : "+ code); //1000~9999
+        emailSender.send(message);
+        Optional<Cert> existCert = certRepository.findCertByEmail(dto.getEmail());
+        if(existCert.isPresent()){
+            Cert cert = existCert.get();
+            cert.updateCodeAndPlusCount(code);
+        }
+        else{
+            Cert cert = Cert.builder()
+                    .email(dto.getEmail())
+                    .univName(dto.getUniv())
+                    .code(code)
+                    .certified(false).build();
+            cert.setUser(user);
+            certRepository.save(cert);
+            user.getCertList().add(cert);
+        }
+        return PropertyUtil.response(true);
+    }
 //
 //    @Transactional
 //    public JSONObject receiveMail(User User, MailDto mailDto) {

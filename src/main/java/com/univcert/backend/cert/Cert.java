@@ -2,6 +2,7 @@ package com.univcert.backend.cert;
 
 import com.univcert.backend.BaseTimeEntity;
 import com.univcert.backend.user.User;
+import lombok.Builder;
 import lombok.Getter;
 
 
@@ -23,7 +24,7 @@ public class Cert extends BaseTimeEntity {
     private String univName;
 
     @Column
-    private int count;
+    private int count=0;
 
     @Column
     private String code;
@@ -35,19 +36,26 @@ public class Cert extends BaseTimeEntity {
     @JoinColumn(name = "user_id")
     private User user;
 
-    public Cert(String email, String code, boolean certified) {
+    @Builder
+    public Cert(String email, String univName, String code, boolean certified) {
         this.email = email;
+        this.univName = univName;
         this.code = code;
         this.certified = certified;
     }
 
     protected Cert() {}
 
-    public void updateKey(String code) {
+    public void updateCodeAndPlusCount(String code) {
         this.code = code;
+        this.count++;
     }
 
     public void setCertified() {
         this.certified = true;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

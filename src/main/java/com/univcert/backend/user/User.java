@@ -40,6 +40,8 @@ public class User extends BaseTimeEntity {
         this.teamName = teamName;
     }
 
+    protected User() {}
+
     public void giveAPI_KEY(String API_KEY) {
         this.API_KEY = API_KEY;
     }

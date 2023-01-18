@@ -8,5 +8,5 @@ import java.util.Optional;
 public interface CertRepository extends JpaRepository<Cert, Long> {
 
     @Query("select c from Cert c where c.email = :mail")
-    Optional<Cert> findCertByUnivEmail(String mail);
+    Optional<Cert> findCertByEmail(String mail);
 }

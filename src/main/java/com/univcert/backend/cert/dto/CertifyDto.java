@@ -8,7 +8,7 @@ import javax.validation.constraints.NotBlank;
 @Getter
 public class CertifyDto {
     @NotBlank
-    @ApiModelProperty(example = "착송", notes = "회사 이름 이나 단체 이름 기입")
+    @ApiModelProperty(example = "PDJIWELFKQA3EFIEOAO1GKFGEDP", notes = "회원가입시 부여")
     private String API_KEY;
 
     @NotBlank
