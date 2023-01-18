@@ -6,7 +6,7 @@ import lombok.Getter;
 import javax.validation.constraints.NotBlank;
 
 @Getter
-public class VerifyDto {
+public class CertifyDto {
     @NotBlank
     @ApiModelProperty(example = "착송", notes = "회사 이름 이나 단체 이름 기입")
     private String API_KEY;

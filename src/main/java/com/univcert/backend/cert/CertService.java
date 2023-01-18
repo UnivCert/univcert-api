@@ -1,6 +1,10 @@
 package com.univcert.backend.cert;
 
+import com.univcert.backend.PropertyUtil;
+import com.univcert.backend.cert.dto.CertifyDto;
 import com.univcert.backend.cert.dto.MailDto;
+import com.univcert.backend.cert.dto.UnivAndEmailDto;
+import com.univcert.backend.error.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import net.sinzak.server.common.PropertyUtil;
 import net.sinzak.server.common.error.InstanceNotFoundException;
@@ -24,11 +28,23 @@ public class CertService {
 
     private final JavaMailSender emailSender;
     private final CertRepository certRepository;
-    private final UserRepository userRepository;
-    private final S3Service s3Service;
+
 
     @Transactional
-    public JSONObject sendMail(MailDto mailDto) {
+    public JSONObject requestCertify(CertifyDto dto) {
+
+    }
+
+
+    public JSONObject tryOut(UnivAndEmailDto univDto) {
+        String domain = UnivMail.getDomain(univDto.getName());
+        if(univDto.getEmail().contains(domain))
+            return PropertyUtil.response(true);
+        return PropertyUtil.responseMessage("대학도메인과 일치하지 않는 메일입니다.");
+    }
+
+    @Transactional
+    public JSONObject sendMail(CertifyDto dto) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom("sinzakofficial@gmail.com");
         message.setTo(mailDto.getAddress());

@@ -1,6 +1,7 @@
 package com.univcert.backend.cert;
 
 import com.univcert.backend.BaseTimeEntity;
+import com.univcert.backend.user.User;
 import lombok.Getter;
 
 
@@ -29,6 +30,10 @@ public class Cert extends BaseTimeEntity {
 
     @Column
     private boolean certified;  //메일 인증여부
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     public Cert(String email, String code, boolean certified) {
         this.email = email;

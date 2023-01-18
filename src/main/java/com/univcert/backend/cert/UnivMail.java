@@ -1,5 +1,15 @@
 package com.univcert.backend.cert;
 
+import com.univcert.backend.PropertyUtil;
+import com.univcert.backend.error.UnivNotFoundException;
+import org.json.simple.JSONObject;
+
+import java.util.Collections;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 public enum UnivMail {  /** 약 62개 **/
 
     GACHON("가천","gachon"), KANGWON("강원","kangwon"), KONKUK("건국","konkuk"), KKU("건국(글로컬)","kku"),
@@ -17,28 +27,39 @@ public enum UnivMail {  /** 약 62개 **/
     HANYANG("한양","hanyang"), ERICA("한양에리카","hanyang"), HONGIK("홍익","hongik"), DGIST("dgist","dgist"),
     GIST("gist","gist"),KAIST("카이스트","kaist"), POSTECH("포항공과","postech"), UNIST("unist","unist");
 
+    private static final Map<String, UnivMail> UNIV_MAIL_MAP =
+                    Collections.unmodifiableMap(Stream.of(values())
+                        .collect(Collectors.toMap(UnivMail::getName, Function.identity())));
+    private final String name;
+    private final String domain;
 
-    private String name;
-    private String mail;
-
-    UnivMail(String name, String mail) {
+    UnivMail(String name, String domain) {
         this.name = name;
-        this.mail = mail;
+        this.domain = domain;
+    }
+
+    public static String getDomain(String univName) {
+        if (UNIV_MAIL_MAP.containsKey(univName)) {
+            return UNIV_MAIL_MAP.get(univName).domain;
+        }
+        throw new UnivNotFoundException("존재하지 않는 대학명입니다.");
     }
 
     public String getName() {
         return name;
     }
 
-    public String getMail() {
-        return mail;
+    public String getDomain() {return domain;}
+
+    public static JSONObject domainCertify(String univ, String email){
+
     }
 
     public static String changeUnivToMail(String mail){
         UnivMail[] univMails = UnivMail.values();
         for (UnivMail univMail : univMails) {
             if(univMail.name.equals(mail))
-                return univMail.mail;
+                return univMail.domain;
         }
         return "";
     }
@@ -48,7 +69,7 @@ public enum UnivMail {  /** 약 62개 **/
         System.out.println("체크: "+ domain[1]);
         for (UnivMail univMail : univMails) {
             System.out.println(univMail.name+" ");
-            if(domain[1].contains(univMail.mail) && univ.equals((univMail.name+"대학교")))
+            if(domain[1].contains(univMail.domain) && univ.equals((univMail.name+"대학교")))
                 return true;
         }
         return false;
