@@ -3,6 +3,7 @@ package com.univcert.backend.cert;
 import com.univcert.backend.PropertyUtil;
 import com.univcert.backend.cert.dto.CertifyDto;
 import com.univcert.backend.cert.dto.CodeResponseDto;
+import com.univcert.backend.cert.dto.StatusDto;
 import com.univcert.backend.cert.dto.UnivAndEmailDto;
 import com.univcert.backend.error.*;
 import com.univcert.backend.user.User;
@@ -93,6 +94,18 @@ public class CertService {
             return PropertyUtil.response(true);
         }
         return PropertyUtil.responseMessage("일치하지 않는 인증코드입니다.");
+    }
+
+    @Transactional(readOnly = true)
+    public JSONObject getStatus(StatusDto dto) {
+        JSONObject obj = new JSONObject();
+        Cert cert = certRepository.findCertByEmail(dto.getEmail()).orElseThrow(CertNotFoundException::new);
+        if(cert.isCertified()){
+            obj.put("success", true);
+            obj.put("certified_date", cert.getCreatedDate());
+            return obj;
+        }
+        return PropertyUtil.responseMessage("인증되지 않은 메일입니다.");
     }
 //
 //    @Transactional

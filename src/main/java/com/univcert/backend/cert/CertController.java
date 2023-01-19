@@ -3,7 +3,9 @@ package com.univcert.backend.cert;
 import com.univcert.backend.PropertyUtil;
 import com.univcert.backend.cert.dto.CertifyDto;
 import com.univcert.backend.cert.dto.CodeResponseDto;
+import com.univcert.backend.cert.dto.StatusDto;
 import com.univcert.backend.cert.dto.UnivAndEmailDto;
+import com.univcert.backend.error.CertNotFoundException;
 import com.univcert.backend.error.CountOverException;
 import com.univcert.backend.error.InstanceNotFoundException;
 import com.univcert.backend.error.UserNotFoundException;
@@ -37,11 +39,11 @@ public class CertController {
     public JSONObject receiveMail(@RequestBody CodeResponseDto codeDto) {
         return certService.receiveMail(codeDto);
     }
-//    @ApiOperation(value = "인증코드 확인", notes = "\"success\" : false 를 받았다면 학생증 인증도 있다는 걸 안내해야됩니다.\n ")
-//    @PostMapping("/v1/status")
-//    public JSONObject receiveMail(@RequestBody MailDto mailDto) {
-//        return certService.receiveMail(mailDto);
-//    }
+    @ApiOperation(value = "인증코드 확인", notes = "\"success\" : false 를 받았다면 학생증 인증도 있다는 걸 안내해야됩니다.\n ")
+    @PostMapping("/v1/status")
+    public JSONObject receiveMail(@RequestBody StatusDto statusDto) {
+        return certService.getStatus(statusDto);
+    }
 //    @ApiOperation(value = "인증코드 확인", notes = "\"success\" : false 를 받았다면 학생증 인증도 있다는 걸 안내해야됩니다.\n ")
 //    @PostMapping("/v1/certifiedlist")
 //    public JSONObject receiveMail(@RequestBody MailDto mailDto) {
@@ -52,13 +54,15 @@ public class CertController {
 
     @ExceptionHandler(UserNotFoundException.class)
     @ResponseStatus(HttpStatus.OK)
-    protected JSONObject handleUserNotFoundException() {
-        return PropertyUtil.responseMessage("존재하지 않는 기관명입니다.");
-    }
+    protected JSONObject handleUserNotFoundException() {return PropertyUtil.responseMessage("존재하지 않는 기관명 or 이메일입니다.");}
 
     @ExceptionHandler(InstanceNotFoundException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     protected JSONObject handleInstanceNotFoundException() {return PropertyUtil.responseMessage("존재하지 않는 이메일 요청입니다.");}
+
+    @ExceptionHandler(CertNotFoundException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    protected JSONObject handleCertNotFoundException() {return PropertyUtil.responseMessage("인증 요청 이력이 존재하지 않습니다.");}
 
     @ExceptionHandler(CountOverException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)

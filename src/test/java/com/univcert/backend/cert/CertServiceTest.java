@@ -2,7 +2,10 @@ package com.univcert.backend.cert;
 
 import com.univcert.backend.cert.dto.CertifyDto;
 import com.univcert.backend.cert.dto.CodeResponseDto;
+import com.univcert.backend.cert.dto.StatusDto;
 import com.univcert.backend.cert.dto.UnivAndEmailDto;
+import com.univcert.backend.error.CertNotFoundException;
+import com.univcert.backend.error.DomainMisMatchException;
 import com.univcert.backend.user.User;
 import com.univcert.backend.user.UserService;
 import com.univcert.backend.user.dto.JoinDto;
@@ -26,6 +29,7 @@ class CertServiceTest {
     private String API_KEY;
     private static final String teamEmail = "sis000512@naver.com";
     private static final String certifyEmail = "insi2000@mail.hongik.ac.kr";
+    private static final String uncertifyEmail = "thddlstj@mail.hanyang.ac.kr";
     private static final String teamName = "착송";
     private static final String univName = "홍익대학교";
 
@@ -52,13 +56,12 @@ class CertServiceTest {
     @Test
     @Order(3)
     @DisplayName("홈화면 try API, 해당 대학와 메일의 도메인이 일치하는지 체크")
-    void tryOut() {
+    void tryOut() throws DomainMisMatchException {
         UnivAndEmailDto test1 = new UnivAndEmailDto(univName, certifyEmail);
         UnivAndEmailDto test2 = new UnivAndEmailDto("한양대학교", certifyEmail);
         JSONObject jsonObject1 = certService.tryOut(test1);
-        JSONObject jsonObject2 = certService.tryOut(test2);
+        Assertions.assertThrows(DomainMisMatchException.class, () -> certService.tryOut(test2));
         Assertions.assertEquals(true,jsonObject1.get("success"));
-        Assertions.assertEquals(false,jsonObject2.get("success"));
     }
 
     @Test
@@ -92,6 +95,15 @@ class CertServiceTest {
     void showVerifiedStatus() {
         Cert cert = certService.getCert(certifyEmail);
         assertEquals(true, cert.isCertified());
+    }
+
+    @Test
+    @Order(7)
+    @DisplayName("인증 이력 조회")
+    void showStatus() {
+        JSONObject certifiedStatus = certService.getStatus(new StatusDto(API_KEY, certifyEmail));
+        Assertions.assertThrows(CertNotFoundException.class, ()->certService.getStatus(new StatusDto(API_KEY, uncertifyEmail)));
+        assertEquals(true, certifiedStatus.get("success"));
     }
 
 
