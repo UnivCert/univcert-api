@@ -24,7 +24,7 @@ public class Cert extends BaseTimeEntity {
     private String univName;
 
     @Column
-    private int count=0;
+    private int count=1;
 
     @Column
     private String code;
