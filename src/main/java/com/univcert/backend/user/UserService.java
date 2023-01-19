@@ -17,20 +17,9 @@ import java.util.UUID;
 public class UserService {
     private final UserRepository userRepository;
 
-//    @Transactional
-//    public TokenDto login(EmailDto dto) {
-//
-//        User user = userRepository.findByEmail(dto.getEmail())
-//                .orElseThrow(() -> new UserNotFoundException("가입되지 않은 ID 입니다."));
-//        TokenDto tokenDto = jwtProvider.createToken(user.getEmail(), user.getId(), user.getRoles());
-//        //리프레시 토큰 저장
-//        RefreshToken refreshToken = RefreshToken.builder()
-//                .key(user.getId())
-//                .token(tokenDto.getRefreshToken())
-//                .build();
-//        refreshTokenRepository.save(refreshToken);
-//        return tokenDto;
-//    }
+    public User findByEmail(String email){
+        return userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
+    }
 
 
     @Transactional

@@ -40,7 +40,7 @@ public enum UnivMail {  /** 약 62개 **/
 
     public static String getDomain(String univName) {
         if (UNIV_MAIL_MAP.containsKey(univName)) {
-            return UNIV_MAIL_MAP.get(univName).domain+"대학교";
+            return UNIV_MAIL_MAP.get(univName).domain;
         }
         throw new UnivNotFoundException("존재하지 않는 대학명입니다.");
     }

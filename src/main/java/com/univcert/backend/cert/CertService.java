@@ -36,7 +36,7 @@ public class CertService {
     public JSONObject requestCertify(CertifyDto dto) {
         User user = userRepository.findByAPI_KEYFetchCertList(dto.getAPI_KEY()).orElseThrow(UserNotFoundException::new);
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom("sinzakofficial@gmail.com");
+        message.setFrom("univcertofficial@gmail.com");
         message.setTo(dto.getEmail());
         message.setSubject(user.getTeamName()+" : 대학인증 메일 코드를 확인해주세요");
         String code = String.valueOf((int)((Math.random()*10 +1) * 1000));
