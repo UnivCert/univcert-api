@@ -107,33 +107,6 @@ public class CertService {
         }
         return PropertyUtil.responseMessage("인증되지 않은 메일입니다.");
     }
-//
-//    @Transactional
-//    public JSONObject certifyUniv(User User, UnivDto dto){
-//        User user = userRepository.findByEmail(User.getEmail()).orElseThrow(UserNotFoundException::new);
-//        Optional<Cert> savedCert = certRepository.findCertByUnivEmail(dto.getUniv_email());
-//        Long certId;
-//        if(savedCert.isEmpty())
-//            certId = certRepository.save(new Cert(dto.getUniv_email(), "", "temp", true)).getId();
-//        else
-//        { /** 대학 이메일 인증 실패했을 때는 이메일이 남아있으니까 **/
-//            Cert cert = savedCert.get();
-//            if(!cert.isVerified())
-//                certId = cert.getId();
-//            else
-//                return PropertyUtil.responseMessage("이미 인증 처리된 이메일입니다.");
-//        }
-//        user.updateCertifiedUniv(dto.getUniv(),dto.getUniv_email()); /** 일단은 허용해주고, 나중에 거짓말이면 대학 미인증으로 바꾸면 됨.**/
-//        return PropertyUtil.response(certId);
-//    }
-//
-//    @Transactional
-//    public JSONObject uploadUnivCard(Long id, MultipartFile file){
-//        Cert cert = certRepository.findById(id).orElseThrow(InstanceNotFoundException::new);
-//        String url = s3Service.uploadImage(file);
-//        cert.updateImageUrl(url);
-//        return PropertyUtil.response(true);
-//    }
 
 
 }

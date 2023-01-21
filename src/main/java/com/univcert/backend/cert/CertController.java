@@ -44,6 +44,7 @@ public class CertController {
     public JSONObject receiveMail(@RequestBody StatusDto statusDto) {
         return certService.getStatus(statusDto);
     }
+
 //    @ApiOperation(value = "인증코드 확인", notes = "\"success\" : false 를 받았다면 학생증 인증도 있다는 걸 안내해야됩니다.\n ")
 //    @PostMapping("/v1/certifiedlist")
 //    public JSONObject receiveMail(@RequestBody MailDto mailDto) {
