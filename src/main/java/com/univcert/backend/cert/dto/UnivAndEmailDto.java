@@ -4,11 +4,11 @@ import lombok.Getter;
 
 @Getter
 public class UnivAndEmailDto {
-    private String name;
+    private String univName;
     private String email;
 
-    public UnivAndEmailDto(String name, String email) {
-        this.name = name;
+    public UnivAndEmailDto(String univName, String email) {
+        this.univName = univName;
         this.email = email;
     }
 }

@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -104,6 +105,15 @@ class CertServiceTest {
         JSONObject certifiedStatus = certService.getStatus(new StatusDto(API_KEY, certifyEmail));
         Assertions.assertThrows(CertNotFoundException.class, ()->certService.getStatus(new StatusDto(API_KEY, uncertifyEmail)));
         assertEquals(true, certifiedStatus.get("success"));
+    }
+
+    @Test
+    @Order(8)
+    @DisplayName("인증된 사람 리스트 출력")
+    void showList() {
+        JSONObject certifiedList = certService.getCertifiedList(API_KEY);
+        System.out.println(certifiedList.toJSONString());
+        assertEquals(false,certifiedList.get("data").equals(Object.class));
     }
 
 

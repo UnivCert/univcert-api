@@ -1,10 +1,7 @@
 package com.univcert.backend.cert;
 
 import com.univcert.backend.PropertyUtil;
-import com.univcert.backend.cert.dto.CertifyDto;
-import com.univcert.backend.cert.dto.CodeResponseDto;
-import com.univcert.backend.cert.dto.StatusDto;
-import com.univcert.backend.cert.dto.UnivAndEmailDto;
+import com.univcert.backend.cert.dto.*;
 import com.univcert.backend.error.*;
 import com.univcert.backend.user.User;
 import com.univcert.backend.user.UserRepository;
@@ -15,6 +12,8 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 
@@ -36,7 +35,7 @@ public class CertService {
     }
 
     public JSONObject tryOut(UnivAndEmailDto univDto) {
-        if (validateUnivDomain(univDto.getEmail(), univDto.getName()))
+        if (validateUnivDomain(univDto.getEmail(), univDto.getUnivName()))
             return PropertyUtil.response(true);
 
         throw new DomainMisMatchException("대학과 일치하지 않는 메일 도메인입니다.");
@@ -108,5 +107,18 @@ public class CertService {
         return PropertyUtil.responseMessage("인증되지 않은 메일입니다.");
     }
 
-
+    @Transactional(readOnly = true)
+    public JSONObject getCertifiedList(String API_KEY) {
+        User user = userRepository.findByAPI_KEYFetchCertList(API_KEY).orElseThrow(ApiNotFoundException::new);
+        List<ResponseListForm> list = new ArrayList<>();
+        for (Cert cert : user.getCertList()) {
+            ResponseListForm responseListForm = ResponseListForm.builder()
+                    .email(cert.getEmail())
+                    .univName(cert.getUnivName())
+                    .count(cert.getCount())
+                    .certified(cert.isCertified()).build();
+            list.add(responseListForm);
+        }
+        return PropertyUtil.response(list);
+    }
 }

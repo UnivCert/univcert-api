@@ -1,14 +1,8 @@
 package com.univcert.backend.cert;
 
 import com.univcert.backend.PropertyUtil;
-import com.univcert.backend.cert.dto.CertifyDto;
-import com.univcert.backend.cert.dto.CodeResponseDto;
-import com.univcert.backend.cert.dto.StatusDto;
-import com.univcert.backend.cert.dto.UnivAndEmailDto;
-import com.univcert.backend.error.CertNotFoundException;
-import com.univcert.backend.error.CountOverException;
-import com.univcert.backend.error.InstanceNotFoundException;
-import com.univcert.backend.error.UserNotFoundException;
+import com.univcert.backend.cert.dto.*;
+import com.univcert.backend.error.*;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONObject;
@@ -45,11 +39,11 @@ public class CertController {
         return certService.getStatus(statusDto);
     }
 
-//    @ApiOperation(value = "인증코드 확인", notes = "\"success\" : false 를 받았다면 학생증 인증도 있다는 걸 안내해야됩니다.\n ")
-//    @PostMapping("/v1/certifiedlist")
-//    public JSONObject receiveMail(@RequestBody MailDto mailDto) {
-//        return certService.receiveMail(mailDto);
-//    }
+    @ApiOperation(value = "인증된 유저 목록 출력")
+    @PostMapping("/v1/certifiedlist")
+    public JSONObject receiveMail(@RequestBody API_KEYDto dto) {
+        return certService.getCertifiedList(dto.getKey());
+    }
 
 
 
@@ -69,7 +63,11 @@ public class CertController {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     protected JSONObject handleCountOverException() {return PropertyUtil.responseMessage("일일 시도 가능 횟수 초과입니다.");}
 
-    @ExceptionHandler(CountOverException.class)
+    @ExceptionHandler(DomainMisMatchException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     protected JSONObject handleDomainMisMatchException() {return PropertyUtil.responseMessage("대학과 일치하지 않는 메일 도메인입니다.");}
+
+    @ExceptionHandler(ApiNotFoundException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    protected JSONObject handleApiException() {return PropertyUtil.responseMessage("존재하지 않는 API_KEY입니다.");}
 }
