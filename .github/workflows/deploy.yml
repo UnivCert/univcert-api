@@ -45,7 +45,7 @@ jobs:
         with:
           username: ec2-user
           host: ${{ secrets.HOST_DEV }}
-          password: ${{ secrets.PRIVATE_KEY }}
+          key: ${{ secrets.PRIVATE_KEY }}
           source: "./build/libs/*.jar"
           target: "/home/ec2-user/deploy"
           strip_components: 2
@@ -56,7 +56,7 @@ jobs:
         with:
           host: ${{ secrets.HOST_DEV }}
           username: ec2-user
-          password: ${{ secrets.PRIVATE_KEY }}
+          key: ${{ secrets.PRIVATE_KEY }}
           port: 22
           envs: GITHUB_SHA
           script: whoami
