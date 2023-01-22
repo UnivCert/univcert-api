@@ -28,12 +28,12 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
 
-      - name: make application-mail.properties
-        run: |
-          cd ./src/main/resources
-          touch ./application-mail.properties
-          echo "${{ secrets.MAIL_PROPERTIES }}" > ./application-mail.properties
-        shell: bash
+#      - name: make application-mail.properties
+#        run: |
+#          cd ./src/main/resources
+#          touch ./application-mail.properties
+#          echo "${{ secrets.MAIL_PROPERTIES }}" > ./application-mail.properties
+#        shell: bash
 
       - name: 🔧 Build Spring server
         run: |
@@ -63,7 +63,8 @@ jobs:
             cd deploy
             docker build -t univcert-docker .
             docker images
-            docker run -d --name univcert -p 8080:8080 univcert-docker
+            docker run --rm -it -p 8080:8080 --name univcert univcert-docker
+#            docker run -d --name univcert -p 8080:8080 univcert-docker
 
 
     ## deploy to production
