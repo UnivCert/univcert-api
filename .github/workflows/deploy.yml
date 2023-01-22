@@ -59,10 +59,11 @@ jobs:
           key: ${{ secrets.PRIVATE_KEY }}
           port: 22
           envs: GITHUB_SHA
-          run: \
+          script: |
             ls -al
             docker build -t univcert-docker .
             docker images
+            docker run -d --name univcert -p 8080:8080 univcert-docker
 
 
     ## deploy to production
@@ -75,7 +76,7 @@ jobs:
   #            password: ${{ secrets.PRIVATE_KEY }}
   #            port: 22
   #            envs: GITHUB_SHA
-  #            script: |
+#              script: |
   #                whoami
   #                ls -al
   #                sudo docker rm -f $(docker ps -qa)
