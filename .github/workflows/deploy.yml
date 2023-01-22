@@ -59,7 +59,11 @@ jobs:
           key: ${{ secrets.PRIVATE_KEY }}
           port: 22
           envs: GITHUB_SHA
-          script: whoami
+          run: \
+            ls -al
+            docker build -t univcert-docker .
+            docker images
+
 
     ## deploy to production
   #      - name: Deploy to prod
