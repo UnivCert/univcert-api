@@ -61,11 +61,6 @@ jobs:
           envs: GITHUB_SHA
           script: whoami
 
-    #      - name: Docker build & push to prod
-    #        run: |
-    #          docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-    #          docker build -t sis000512/docker-spring:1.0 .
-    #          docker push sis000512/docker-spring:1.0
     ## deploy to production
   #      - name: Deploy to prod
   #        uses: appleboy/ssh-action@master
