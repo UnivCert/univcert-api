@@ -60,7 +60,7 @@ jobs:
           port: 22
           envs: GITHUB_SHA
           script: |
-            ls -al
+            cd deploy
             docker build -t univcert-docker .
             docker images
             docker run -d --name univcert -p 8080:8080 univcert-docker
