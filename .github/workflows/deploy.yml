@@ -59,7 +59,7 @@ jobs:
           password: ${{ secrets.PRIVATE_KEY }}
           port: 22
           envs: GITHUB_SHA
-          script: chmod +x /home/ec2-user/deploy/deploy.sh && sh /home/ec2-user/deploy/deploy.sh
+          script: whoami
 
     #      - name: Docker build & push to prod
     #        run: |
