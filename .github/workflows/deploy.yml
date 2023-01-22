@@ -28,6 +28,13 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
 
+      - name: make application-mail.properties
+          run: |
+            cd ./src/main/resources
+            touch ./application-mail.properties
+            echo "${{ secrets.MAIL_PROPERTIES }}" > ./application-mail.properties
+          shell: bash
+
       - name: 🔧 Build Spring server
         run: |
           chmod +x ./gradlew
