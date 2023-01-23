@@ -70,7 +70,7 @@ jobs:
             cd deploy
             docker build -t univcert-docker .
             docker images
-            docker run --rm -i -p 8080:8080 --name univcert univcert-docker
+            docker run --rm -p 8080:8080 --name univcert univcert-docker
 #            docker run -d --name univcert -p 8080:8080 univcert-docker
 
 
