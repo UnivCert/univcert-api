@@ -9,7 +9,7 @@ import javax.validation.constraints.NotBlank;
 public class CertifyDto {
     @NotBlank
     @ApiModelProperty(example = "PDJIWELFKQA3EFIEOAO1GKFGEDP", notes = "회원가입시 부여")
-    private String API_KEY;
+    private String key;
 
     @NotBlank
     @ApiModelProperty(example = "홍익대학교")
@@ -23,8 +23,8 @@ public class CertifyDto {
     @ApiModelProperty(value = "true 시 도메인까지 체크")
     private boolean univ_check = false;
 
-    public CertifyDto(String API_KEY, String univ, String email, boolean univ_check) {
-        this.API_KEY = API_KEY;
+    public CertifyDto(String key, String univ, String email, boolean univ_check) {
+        this.key = key;
         this.univ = univ;
         this.email = email;
         this.univ_check = univ_check;

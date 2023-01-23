@@ -16,7 +16,13 @@ public class CertController {
 
     private final CertService certService;
 
-    @ApiOperation(value = "메인 홈에서 API 시도해보기", notes = "어떤 사람이든 가능하게 https://open.kickbox.com/  처럼")
+    @ApiOperation(value = "메인 홈에서 API 시도해보기", notes = "어떤 사람이든 가능하게 https://open.kickbox.com/  처럼" +
+            "{(sis000512@naver.com, 홍익대학교면?)\n" +
+            "  \"success\": false,\n" +
+            "  \"message\": \"대학과 일치하지 않는 메일 도메인입니다.\"\n" +
+            "}" +
+            "{(insi2000@mail.hongik.ac.kr, 홍익대학교면?)\n" +
+            "  \"success\": true,\n}")
     @PostMapping("/try")
     public JSONObject tryApi(@RequestBody UnivAndEmailDto dto) {
         return certService.tryOut(dto);

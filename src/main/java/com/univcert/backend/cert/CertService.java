@@ -50,7 +50,7 @@ public class CertService {
 
     @Transactional
     public JSONObject requestCertify(CertifyDto dto) {
-        User user = userRepository.findByAPI_KEYFetchCertList(dto.getAPI_KEY()).orElseThrow(UserNotFoundException::new);
+        User user = userRepository.findByAPI_KEYFetchCertList(dto.getKey()).orElseThrow(ApiNotFoundException::new);
         if(dto.isUniv_check()){
             if(!validateUnivDomain(dto.getEmail(), dto.getUniv()))
                 return PropertyUtil.responseMessage(dto.getUniv()+" 메일이 아닙니다.");
