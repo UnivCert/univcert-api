@@ -68,6 +68,7 @@ jobs:
           envs: GITHUB_SHA
           script: |
             cd deploy
+            docker container stop existing univcert
             docker build -t univcert-docker .
             docker images
             docker run -d --rm -p 8080:8080 --name univcert univcert-docker
