@@ -1,6 +1,8 @@
 package com.univcert.backend.user;
 
+import com.univcert.backend.error.ApiDocumentResponse;
 import com.univcert.backend.user.dto.JoinDto;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONObject;
@@ -8,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+@Api(tags = "유저")
 @RestController
 @RequiredArgsConstructor
 public class UserController {
@@ -26,6 +29,7 @@ public class UserController {
         return userService.join(dto);
     }
 
+    @ApiDocumentResponse
     @ApiOperation(value = "이메일, 소속명 중복체크", notes = "성공 시 success true 실패 시 success false 랑 이미 존재하는 이메일이거나 소속명입니다. 출력")
     @PostMapping("/check")
     public JSONObject checkJoin(@RequestBody JoinDto dto) {
