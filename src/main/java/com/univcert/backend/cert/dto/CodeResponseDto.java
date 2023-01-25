@@ -13,7 +13,7 @@ public class CodeResponseDto {
 
     @NotBlank
     @ApiModelProperty(example = "홍익대학교")
-    private String univ;
+    private String univName;
 
     @NotBlank
     @ApiModelProperty(example = "insi2000@mail.hongik.ac.kr")
@@ -23,9 +23,9 @@ public class CodeResponseDto {
     @ApiModelProperty(example = "3819")
     private String code;
 
-    public CodeResponseDto(String API_KEY, String univ, String email, String code) {
+    public CodeResponseDto(String API_KEY, String univName, String email, String code) {
         this.key = API_KEY;
-        this.univ = univ;
+        this.univName = univName;
         this.email = email;
         this.code = code;
     }

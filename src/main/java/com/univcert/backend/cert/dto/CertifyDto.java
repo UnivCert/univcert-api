@@ -13,7 +13,7 @@ public class CertifyDto {
 
     @NotBlank
     @ApiModelProperty(example = "홍익대학교")
-    private String univ;
+    private String univName;
 
     @NotBlank
     @ApiModelProperty(example = "insi2000@mail.hongik.ac.kr")
@@ -23,9 +23,9 @@ public class CertifyDto {
     @ApiModelProperty(value = "true 시 도메인까지 체크")
     private boolean univ_check = false;
 
-    public CertifyDto(String key, String univ, String email, boolean univ_check) {
+    public CertifyDto(String key, String univName, String email, boolean univ_check) {
         this.key = key;
-        this.univ = univ;
+        this.univName = univName;
         this.email = email;
         this.univ_check = univ_check;
     }
