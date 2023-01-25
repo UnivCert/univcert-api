@@ -36,7 +36,7 @@ public class UserController {
         return userService.checkEmailAndTeamName(dto);
     }
 
-    @ApiOperation(value = "이메일과 소속명으로 로그인", notes = "성공시 유저 정보를 보내드립니다. 세션이나 쿠키 안쓸거라 그냥 이걸 바로 홈에 띄울 예정 이메일, 소속명, API_KEY, queryCount(일별 시도 가능 횟수)" +
+    @ApiOperation(value = "이메일과 소속명으로 로그인", notes = "성공시 유저 정보를 보내드립니다. 세션이나 쿠키 안쓸거라 그냥 이걸 바로 홈에 띄울 예정 이메일, 소속명, api 키, queryCount(일별 시도 가능 횟수)" +
             "{\n" +
             "  \"data\": {\n" +
             "    \"email\": \"sis000512@naver.com\",\n" +
