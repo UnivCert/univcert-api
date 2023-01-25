@@ -16,6 +16,7 @@ public class CertController {
 
     private final CertService certService;
 
+    @ApiDocumentResponse
     @ApiOperation(value = "메인 홈에서 API 시도해보기", notes = "어떤 사람이든 가능하게 https://open.kickbox.com/  처럼" +
             "{(sis000512@naver.com, 홍익대학교면?)\n" +
             "  \"success\": false,\n" +
@@ -28,22 +29,27 @@ public class CertController {
         return certService.tryOut(dto);
     }
 
-    @ApiOperation(value = "대학 메일 인증 시작", notes = "특히")
+    @ApiDocumentResponse
+    @ApiOperation(value = "대학 메일 인증 시작", notes = "프론트단에서 이메일형식으로 잘 보내는지 체킹해주셈")
     @PostMapping("/v1/certify")
     public JSONObject sendMail(@RequestBody CertifyDto certifyDto) {
         return certService.requestCertify(certifyDto);
     }
 
-    @ApiOperation(value = "인증코드 확인", notes = "\"success\" : false 를 받았다면 학생증 인증도 있다는 걸 안내해야됩니다.\n ")
+    @ApiDocumentResponse
+    @ApiOperation(value = "인증코드 확인")
     @PostMapping("/v1/certifycode")
     public JSONObject receiveMail(@RequestBody CodeResponseDto codeDto) {
         return certService.receiveMail(codeDto);
     }
-    @ApiOperation(value = "인증코드 확인", notes = "\"success\" : false 를 받았다면 학생증 인증도 있다는 걸 안내해야됩니다.\n ")
+
+    @ApiDocumentResponse
+    @ApiOperation(value = "인증여부 확인", notes = "success 여부와 인증일자 반환됨")
     @PostMapping("/v1/status")
     public JSONObject receiveMail(@RequestBody StatusDto statusDto) {
         return certService.getStatus(statusDto);
     }
+
 
     @ApiOperation(value = "인증된 유저 목록 출력")
     @PostMapping("/v1/certifiedlist")

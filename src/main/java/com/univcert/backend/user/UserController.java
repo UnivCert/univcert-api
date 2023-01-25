@@ -1,6 +1,8 @@
 package com.univcert.backend.user;
 
+import com.univcert.backend.error.ApiDocumentResponse;
 import com.univcert.backend.user.dto.JoinDto;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONObject;
@@ -8,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+@Api(tags = "유저")
 @RestController
 @RequiredArgsConstructor
 public class UserController {
@@ -26,13 +29,14 @@ public class UserController {
         return userService.join(dto);
     }
 
+    @ApiDocumentResponse
     @ApiOperation(value = "이메일, 소속명 중복체크", notes = "성공 시 success true 실패 시 success false 랑 이미 존재하는 이메일이거나 소속명입니다. 출력")
     @PostMapping("/check")
     public JSONObject checkJoin(@RequestBody JoinDto dto) {
         return userService.checkEmailAndTeamName(dto);
     }
 
-    @ApiOperation(value = "이메일과 소속명으로 로그인", notes = "성공시 유저 정보를 보내드립니다. 세션이나 쿠키 안쓸거라 그냥 이걸 바로 홈에 띄울 예정 이메일, 소속명, API_KEY, queryCount(일별 시도 가능 횟수)" +
+    @ApiOperation(value = "이메일과 소속명으로 로그인", notes = "성공시 유저 정보를 보내드립니다. 세션이나 쿠키 안쓸거라 그냥 이걸 바로 홈에 띄울 예정 이메일, 소속명, api 키, queryCount(일별 시도 가능 횟수)" +
             "{\n" +
             "  \"data\": {\n" +
             "    \"email\": \"sis000512@naver.com\",\n" +
