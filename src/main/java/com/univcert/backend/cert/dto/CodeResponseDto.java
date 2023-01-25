@@ -9,7 +9,7 @@ import javax.validation.constraints.NotBlank;
 public class CodeResponseDto {
     @NotBlank
     @ApiModelProperty(example = "PDJIWELFKQA3EFIEOAO1GKFGEDP", notes = "회원가입시 부여")
-    private String API_KEY;
+    private String key;
 
     @NotBlank
     @ApiModelProperty(example = "홍익대학교")
@@ -24,7 +24,7 @@ public class CodeResponseDto {
     private String code;
 
     public CodeResponseDto(String API_KEY, String univ, String email, String code) {
-        this.API_KEY = API_KEY;
+        this.key = API_KEY;
         this.univ = univ;
         this.email = email;
         this.code = code;
