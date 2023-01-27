@@ -15,6 +15,13 @@ public class PropertyUtil {
         return obj;
     }
 
+    public static JSONObject response(){
+        JSONObject obj = new JSONObject();
+        obj.put(SUCCESS_WORD, true);
+        obj.put("status",200);
+        return obj;
+    }
+
     public static JSONObject response(Object data){
         JSONObject obj = new JSONObject();
         obj.put(SUCCESS_WORD,true);
