@@ -68,7 +68,11 @@ public class CertController {
 
     @ExceptionHandler(InstanceNotFoundException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    protected JSONObject handleInstanceNotFoundException() {return PropertyUtil.responseMessage("존재하지 않는 이메일 요청입니다.");}
+    protected JSONObject handleInstanceNotFoundException() {return PropertyUtil.responseMessage("서버에 존재하지 않는 이메일 값에 요청하고 있습니다.");}
+
+    @ExceptionHandler(AlreadyFinishException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    protected JSONObject handleAlreadyFinishException() {return PropertyUtil.responseMessage("이미 완료된 요청입니다.");}
 
     @ExceptionHandler(CertNotFoundException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)

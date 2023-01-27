@@ -63,12 +63,15 @@ public class CertService {
         User user = userRepository.findByAPI_KEYFetchCertList(dto.getKey()).orElseThrow(ApiNotFoundException::new);
         if(dto.isUniv_check()){
             if(!validateUnivDomain(dto.getEmail(), dto.getUnivName()))
-                return PropertyUtil.responseMessage(dto.getUnivName()+" 메일이 아닙니다.");
+                throw new DomainMisMatchException();
         }
         Optional<Cert> existCert = certRepository.findCertByEmail(dto.getEmail());
         if(existCert.isPresent()){
-            if(existCert.get().getCount()>3)
+            Cert cert = existCert.get();
+            if(cert.getCount()>3)
                 throw new CountOverException("일일 시도 가능 횟수 초과입니다.");
+            if(cert.isCertified())
+                throw new AlreadyFinishException();
         }
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom("univcertofficial@gmail.com");
@@ -98,7 +101,7 @@ public class CertService {
     @Transactional
     public JSONObject receiveMail(CodeResponseDto codeDto) {
         JSONObject obj = new JSONObject();
-        Cert cert = certRepository.findCertByEmail(codeDto.getEmail()).orElseThrow(InstanceNotFoundException::new);
+        Cert cert = certRepository.findCertByEmail(codeDto.getEmail()).orElseThrow(CertNotFoundException::new);
         if(cert.getCode().equals(codeDto.getCode())){
             cert.setCertified();
             obj.put("success", true);
