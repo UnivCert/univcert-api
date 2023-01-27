@@ -29,6 +29,7 @@ public class CertController {
         return certService.tryOut(dto);
     }
 
+
     @ApiDocumentResponse
     @ApiOperation(value = "대학 메일 인증 시작", notes = "프론트단에서 이메일형식으로 잘 보내는지 체킹해주셈")
     @PostMapping("/v1/certify")
@@ -50,7 +51,6 @@ public class CertController {
         return certService.getStatus(statusDto);
     }
 
-
     @ApiOperation(value = "인증된 유저 목록 출력")
     @PostMapping("/v1/certifiedlist")
     public JSONObject receiveMail(@RequestBody API_KEYDto dto) {
@@ -58,6 +58,9 @@ public class CertController {
     }
 
 
+    @ExceptionHandler(UnivNotFoundException.class)
+    @ResponseStatus(HttpStatus.OK)
+    protected JSONObject handleUnivNotFoundException() {return PropertyUtil.responseMessage("서버에 존재하지 않는 대학명입니다. univ_check 값을 false로 바꿔서 진행해주세요.");}
 
     @ExceptionHandler(UserNotFoundException.class)
     @ResponseStatus(HttpStatus.OK)
