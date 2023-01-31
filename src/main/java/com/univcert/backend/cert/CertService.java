@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONObject;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -59,27 +60,14 @@ public class CertService {
     }
 
     @Transactional
-    public JSONObject requestCertify(CertifyDto dto) {
+    public MailForm checkErrorAndMakeForm(CertifyDto dto) {
         User user = userRepository.findByAPI_KEYFetchCertList(dto.getKey()).orElseThrow(ApiNotFoundException::new);
         if(dto.isUniv_check()){
             if(!validateUnivDomain(dto.getEmail(), dto.getUnivName()))
                 throw new DomainMisMatchException();
         }
-        Optional<Cert> existCert = certRepository.findCertByEmail(dto.getEmail());
-        if(existCert.isPresent()){
-            Cert cert = existCert.get();
-            if(cert.getCount()>3)
-                throw new CountOverException("일일 시도 가능 횟수 초과입니다.");
-            if(cert.isCertified())
-                throw new AlreadyFinishException();
-        }
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom("univcertofficial@gmail.com");
-        message.setTo(dto.getEmail());
-        message.setSubject(user.getTeamName()+" : 대학인증 메일 코드를 확인해주세요");
+        Optional<Cert> existCert = checkCountAndCertified(dto);
         String code = String.valueOf((int)((Math.random()*10 +1) * 1000));
-        message.setText(user.getTeamName()+"에서 요청한 인증번호 : "+ code); //1000~9999
-        emailSender.send(message);
 
         if(existCert.isPresent()){
             Cert cert = existCert.get();
@@ -95,8 +83,32 @@ public class CertService {
             certRepository.save(cert);
             user.getCertList().add(cert);
         }
-        return PropertyUtil.response(true);
+        return new MailForm(dto.getEmail(), user.getTeamName(), code);
     }
+
+    private Optional<Cert> checkCountAndCertified(CertifyDto dto) {
+        Optional<Cert> existCert = certRepository.findCertByEmail(dto.getEmail());
+        if(existCert.isPresent()){
+            Cert cert = existCert.get();
+            if(cert.getCount()>3)
+                throw new CountOverException("일일 시도 가능 횟수 초과입니다.");
+            if(cert.isCertified())
+                throw new AlreadyCertifiedException();
+        }
+        return existCert;
+    }
+
+    @Async
+    public void sendMail(MailForm form) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom("univcertofficial@gmail.com");
+        message.setTo(form.getEmail());
+        message.setSubject(form.getTeamName()+" : 인증 메일 코드를 확인해주세요");
+        message.setText(form.getTeamName()+"에서 요청한 인증번호 : "+ form.getCode()); //1000~9999
+        emailSender.send(message);
+    }
+
+
 
     @Transactional
     public JSONObject receiveMail(CodeResponseDto codeDto) {

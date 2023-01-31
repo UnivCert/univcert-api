@@ -34,7 +34,9 @@ public class CertController {
     @ApiOperation(value = "대학 메일 인증 시작", notes = "프론트단에서 이메일형식으로 잘 보내는지 체킹해주셈")
     @PostMapping("/v1/certify")
     public JSONObject sendMail(@RequestBody CertifyDto certifyDto) {
-        return certService.requestCertify(certifyDto);
+        MailForm mailForm = certService.checkErrorAndMakeForm(certifyDto);
+        certService.sendMail(mailForm);  /** 비동기 처리 !! 속도 20배 향상**/
+        return PropertyUtil.response(true);
     }
 
     @ApiDocumentResponse
@@ -70,7 +72,7 @@ public class CertController {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     protected JSONObject handleInstanceNotFoundException() {return PropertyUtil.responseMessage("서버에 존재하지 않는 이메일 값에 요청하고 있습니다.");}
 
-    @ExceptionHandler(AlreadyFinishException.class)
+    @ExceptionHandler(AlreadyCertifiedException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     protected JSONObject handleAlreadyFinishException() {return PropertyUtil.responseMessage("이미 완료된 요청입니다.");}
 

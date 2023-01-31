@@ -15,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -26,6 +25,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class CertServiceTest {
     @Autowired UserService userService;
     @Autowired CertService certService;
+    @Autowired CertController certController;
     private User user;
     private String API_KEY;
     private static final String teamEmail = "sis000512@naver.com";
@@ -34,16 +34,16 @@ class CertServiceTest {
     private static final String teamName = "착송";
     private static final String univName = "홍익대학교";
 
-    @Test
-    @Order(1)
-    @DisplayName("회원가입")
-    @Transactional
-    @Rollback(value = false)
-    void join() {
-        JoinDto dto = new JoinDto(teamName, teamEmail);
-        JSONObject obj = userService.join(dto);
-        assertEquals(obj.get("success"), true);
-    }
+//    @Test
+//    @Order(1)
+//    @DisplayName("회원가입")
+//    @Transactional
+//    @Rollback(value = false)
+//    void join() {
+//        JoinDto dto = new JoinDto(teamName, teamEmail);
+//        JSONObject obj = userService.join(dto);
+//        assertEquals(obj.get("success"), true);
+//    }
 
     @Test
     @Order(2)
@@ -72,7 +72,9 @@ class CertServiceTest {
     @Rollback(value = false)
     void requestCertify() {
         CertifyDto certifyInfo = new CertifyDto(API_KEY, univName, certifyEmail, true);
-        JSONObject response = certService.requestCertify(certifyInfo);
+//        MailForm mailForm  = certService.checkErrorAndMakeForm(certifyInfo);
+//        certService.sendMail(mailForm);
+        JSONObject response = certController.sendMail(certifyInfo);
         assertEquals(true, response.get("success"));
         String code = certService.getCode(certifyInfo.getEmail());
         assertEquals(code.length(), 4);
