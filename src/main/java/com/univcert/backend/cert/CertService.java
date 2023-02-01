@@ -59,6 +59,13 @@ public class CertService {
         return false;
     }
 
+    public JSONObject validateUnivName(String univName) {
+        String domain = UnivMail.getDomain(univName);
+        if(!domain.isBlank())
+            return PropertyUtil.response(false);
+        return PropertyUtil.response(true);
+    }
+
     @Transactional
     public MailForm checkErrorAndMakeForm(CertifyDto dto) {
         User user = userRepository.findByAPI_KEYFetchCertList(dto.getKey()).orElseThrow(ApiNotFoundException::new);

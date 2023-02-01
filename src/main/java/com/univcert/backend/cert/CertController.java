@@ -29,6 +29,12 @@ public class CertController {
         return certService.tryOut(dto);
     }
 
+    @ApiDocumentResponse
+    @ApiOperation(value = "메인홈에서 이 대학교 명이 서버에 존재하는 학교인지 체크")
+    @PostMapping("/checkuniv")
+    public JSONObject sendMail(@RequestBody UnivDto univDto) {
+        return certService.validateUnivName(univDto.getUnivName());
+    }
 
     @ApiDocumentResponse
     @ApiOperation(value = "대학 메일 인증 시작", notes = "프론트단에서 이메일형식으로 잘 보내는지 체킹해주셈")
