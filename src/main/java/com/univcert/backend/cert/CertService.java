@@ -61,7 +61,7 @@ public class CertService {
 
     public JSONObject validateUnivName(String univName) {
         String domain = UnivMail.getDomain(univName);
-        if(!domain.isBlank())
+        if(domain.isBlank())
             return PropertyUtil.response(false);
         return PropertyUtil.response(true);
     }
