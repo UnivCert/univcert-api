@@ -138,7 +138,7 @@ public class CertService {
         Cert cert = certRepository.findCertByEmail(dto.getEmail()).orElseThrow(CertNotFoundException::new);
         if(cert.isCertified()){
             obj.put("success", true);
-            obj.put("certified_date", cert.getCreatedDate());
+            obj.put("certified_date", cert.getCreatedDate().toString());
             return obj;
         }
         return PropertyUtil.responseMessage("인증되지 않은 메일입니다.");
@@ -152,6 +152,7 @@ public class CertService {
             ResponseListForm responseListForm = ResponseListForm.builder()
                     .email(cert.getEmail())
                     .univName(cert.getUnivName())
+                    .certified_date(cert.getCreatedDate().toString())
                     .count(cert.getCount())
                     .certified(cert.isCertified()).build();
             list.add(responseListForm);
