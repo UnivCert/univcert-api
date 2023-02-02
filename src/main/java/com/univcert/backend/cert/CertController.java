@@ -30,10 +30,19 @@ public class CertController {
     }
 
     @ApiDocumentResponse
+    @ApiOperation(value = "메인홈에서 이 대학교 명이 서버에 존재하는 학교인지 체크")
+    @PostMapping("/checkuniv")
+    public JSONObject sendMail(@RequestBody UnivDto univDto) {
+        return certService.validateUnivName(univDto.getUnivName());
+    }
+
+    @ApiDocumentResponse
     @ApiOperation(value = "대학 메일 인증 시작", notes = "프론트단에서 이메일형식으로 잘 보내는지 체킹해주셈")
     @PostMapping("/v1/certify")
     public JSONObject sendMail(@RequestBody CertifyDto certifyDto) {
-        return certService.requestCertify(certifyDto);
+        MailForm mailForm = certService.checkErrorAndMakeForm(certifyDto);
+        certService.sendMail(mailForm);  /** 비동기 처리 !! 속도 20배 향상**/
+        return PropertyUtil.response(true);
     }
 
     @ApiDocumentResponse
@@ -50,7 +59,6 @@ public class CertController {
         return certService.getStatus(statusDto);
     }
 
-
     @ApiOperation(value = "인증된 유저 목록 출력")
     @PostMapping("/v1/certifiedlist")
     public JSONObject receiveMail(@RequestBody API_KEYDto dto) {
@@ -58,6 +66,9 @@ public class CertController {
     }
 
 
+    @ExceptionHandler(UnivNotFoundException.class)
+    @ResponseStatus(HttpStatus.OK)
+    protected JSONObject handleUnivNotFoundException() {return PropertyUtil.responseMessage("서버에 존재하지 않는 대학명입니다. univ_check 값을 false로 바꿔서 진행해주세요.");}
 
     @ExceptionHandler(UserNotFoundException.class)
     @ResponseStatus(HttpStatus.OK)
@@ -65,7 +76,11 @@ public class CertController {
 
     @ExceptionHandler(InstanceNotFoundException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    protected JSONObject handleInstanceNotFoundException() {return PropertyUtil.responseMessage("존재하지 않는 이메일 요청입니다.");}
+    protected JSONObject handleInstanceNotFoundException() {return PropertyUtil.responseMessage("서버에 존재하지 않는 이메일 값에 요청하고 있습니다.");}
+
+    @ExceptionHandler(AlreadyCertifiedException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    protected JSONObject handleAlreadyFinishException() {return PropertyUtil.responseMessage("이미 완료된 요청입니다.");}
 
     @ExceptionHandler(CertNotFoundException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)

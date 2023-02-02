@@ -8,7 +8,7 @@ import javax.validation.constraints.NotBlank;
 @Getter
 public class CodeResponseDto {
     @NotBlank
-    @ApiModelProperty(example = "PDJIWELFKQA3EFIEOAO1GKFGEDP", notes = "회원가입시 부여")
+    @ApiModelProperty(example = "df6ea145-4134-40a3-a298-764cd7d5d7bb", notes = "회원가입시 부여")
     private String key;
 
     @NotBlank

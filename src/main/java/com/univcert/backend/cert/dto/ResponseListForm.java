@@ -8,13 +8,15 @@ import lombok.Getter;
 public class ResponseListForm {
     private String email;
     private String univName;
+    private String certified_date;
     private int count;
     private boolean certified;  //메일 인증여부
 
     @Builder
-    public ResponseListForm(String email, String univName, int count, boolean certified) {
+    public ResponseListForm(String email, String univName, String certified_date, int count, boolean certified) {
         this.email = email;
         this.univName = univName;
+        this.certified_date = certified_date;
         this.count = count;
         this.certified = certified;
     }
