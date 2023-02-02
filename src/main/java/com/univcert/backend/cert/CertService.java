@@ -37,18 +37,27 @@ public class CertService {
 
     public JSONObject tryOut(UnivAndEmailDto univDto) {
         if (validateUnivDomain(univDto.getEmail(), univDto.getUnivName()))
-            return makeTryAPI(univDto);
+            return makeSuccessAPI(univDto);
 
-        throw new DomainMisMatchException("대학과 일치하지 않는 메일 도메인입니다.");
+        return makeFailAPI(univDto);
     }
 
-    private JSONObject makeTryAPI(UnivAndEmailDto univDto) {
+    private JSONObject makeSuccessAPI(UnivAndEmailDto univDto) {
         JSONObject obj = new JSONObject();
         obj.put("univ_email", univDto.getEmail());
         obj.put("domain", univDto.getEmail().split("@")[1]);
         obj.put("univ_name", univDto.getUnivName());
         obj.put("status",200);
         obj.put("success",true);
+        return obj;
+    }
+
+    private JSONObject makeFailAPI(UnivAndEmailDto univDto) {
+        JSONObject obj = new JSONObject();
+        obj.put("expected", UnivMail.getDomain(univDto.getUnivName()));
+        obj.put("domain", univDto.getEmail().split("@")[1]);
+        obj.put("status",400);
+        obj.put("success",false);
         return obj;
     }
 
