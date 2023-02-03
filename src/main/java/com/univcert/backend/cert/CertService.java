@@ -136,7 +136,7 @@ public class CertService {
             obj.put("univName", cert.getUnivName());
             obj.put("certified_email",cert.getEmail());
             obj.put("certified_date", cert.getCreatedDate());
-            return PropertyUtil.response(true);
+            return obj;
         }
         return PropertyUtil.responseMessage("일치하지 않는 인증코드입니다.");
     }
