@@ -55,13 +55,13 @@ public class CertController {
     @ApiDocumentResponse
     @ApiOperation(value = "인증여부 확인", notes = "success 여부와 인증일자 반환됨")
     @PostMapping("/v1/status")
-    public JSONObject receiveMail(@RequestBody StatusDto statusDto) {
+    public JSONObject getStatus(@RequestBody StatusDto statusDto) {
         return certService.getStatus(statusDto);
     }
 
     @ApiOperation(value = "인증된 유저 목록 출력")
     @PostMapping("/v1/certifiedlist")
-    public JSONObject receiveMail(@RequestBody API_KEYDto dto) {
+    public JSONObject getCertifiedList(@RequestBody API_KEYDto dto) {
         return certService.getCertifiedList(dto.getKey());
     }
 

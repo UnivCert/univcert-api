@@ -130,13 +130,13 @@ public class CertService {
     public JSONObject receiveMail(CodeResponseDto codeDto) {
         JSONObject obj = new JSONObject();
         Cert cert = certRepository.findCertByEmail(codeDto.getEmail()).orElseThrow(CertNotFoundException::new);
-        if(cert.getCode().equals(codeDto.getCode())){
+        if(cert.getCode().equals(codeDto.getCode()) && !cert.isCertified()){
             cert.setCertified();
             obj.put("success", true);
             obj.put("univName", cert.getUnivName());
             obj.put("certified_email",cert.getEmail());
             obj.put("certified_date", cert.getCreatedDate());
-            return PropertyUtil.response(true);
+            return obj;
         }
         return PropertyUtil.responseMessage("일치하지 않는 인증코드입니다.");
     }
