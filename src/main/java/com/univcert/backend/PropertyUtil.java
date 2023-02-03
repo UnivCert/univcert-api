@@ -38,6 +38,7 @@ public class PropertyUtil {
 
     public static JSONObject responseMessage(String message){ //그냥 json 리턴해줄때 씀
         JSONObject obj = new JSONObject();
+        obj.put("code",200);
         obj.put(SUCCESS_WORD, false);
         obj.put("message", message);
         return obj;

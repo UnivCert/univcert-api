@@ -130,7 +130,7 @@ public class CertService {
     public JSONObject receiveMail(CodeResponseDto codeDto) {
         JSONObject obj = new JSONObject();
         Cert cert = certRepository.findCertByEmail(codeDto.getEmail()).orElseThrow(CertNotFoundException::new);
-        if(cert.getCode().equals(codeDto.getCode())){
+        if(cert.getCode().equals(codeDto.getCode()) && !cert.isCertified()){
             cert.setCertified();
             obj.put("success", true);
             obj.put("univName", cert.getUnivName());
