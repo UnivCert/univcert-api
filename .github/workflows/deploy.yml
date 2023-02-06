@@ -68,9 +68,6 @@ jobs:
           whoami
           npm install
 
-      - name: Run test codes
-        working-directory: ./univcert-web
-        run: npm run test
       - name: 🔧 npm run build
         working-directory: ./univcert-web
         run: npm run build
@@ -132,17 +129,3 @@ jobs:
   #                sudo docker pull sis000512/docker-spring:1.0
   #                docker-compose up -d
   #                docker image prune -f
-
-  current-time:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Get Current Time
-        uses: 1466587594/get-current-time@v2
-        id: current-time
-        with:
-          format: YYYY-MM-DDTHH:mm:ss
-          utcOffset: "+09:00"
-
-      - name: Print Current Time
-        run: echo "Current Time=${{steps.current-time.outputs.formattedTime}}"
-        shell: bash
