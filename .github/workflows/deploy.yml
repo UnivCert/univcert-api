@@ -10,6 +10,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    env:
+      CI: false
+
     steps:
       - name: Check out source code
         uses: actions/checkout@v2
@@ -47,13 +50,40 @@ jobs:
           chmod +x ./gradlew
           ./gradlew clean build -x test
 
-      - name: Deploy Prod use SCP
+      - name: 📦️ Setup NodeJS 16
+          uses: actions/setup-node@v3
+          with:
+            node-version: 16
+            cache: "npm"
+
+      - name: Install modules
+        working-directory: ./univcert-web
+        run: npm install
+      - name: Run test codes
+        working-directory: ./univcert-web
+        run: npm run test
+      - name: 🔧 npm run build
+        working-directory: ./univcert-web
+        run: npm run build
+
+
+      - name: Deploy Prod use SCP [Spring]
         uses: appleboy/scp-action@master
         with:
           username: ec2-user
           host: ${{ secrets.HOST_DEV }}
           key: ${{ secrets.PRIVATE_KEY }}
           source: "./build/libs/*.jar"
+          target: "/home/ec2-user/deploy"
+          strip_components: 2
+
+      - name: Deploy Prod use SCP [React]
+        uses: appleboy/scp-action@master
+        with:
+          username: ec2-user
+          host: ${{ secrets.HOST_DEV }}
+          key: ${{ secrets.PRIVATE_KEY }}
+          source: "./univcert-web/build/*"
           target: "/home/ec2-user/deploy"
           strip_components: 2
 
@@ -68,6 +98,7 @@ jobs:
           envs: GITHUB_SHA
           script: |
             cd deploy
+            ls -al
             docker container stop existing univcert
             docker build -t univcert-docker .
             docker images
