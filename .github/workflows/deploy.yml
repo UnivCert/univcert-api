@@ -51,10 +51,10 @@ jobs:
           ./gradlew clean build -x test
 
       - name: 📦️ Setup NodeJS 16
-          uses: actions/setup-node@v3
-          with:
-            node-version: 16
-            cache: "npm"
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: "npm"
 
       - name: Install modules
         working-directory: ./univcert-web
