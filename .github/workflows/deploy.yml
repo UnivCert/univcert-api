@@ -90,7 +90,7 @@ jobs:
           host: ${{ secrets.HOST_DEV }}
           key: ${{ secrets.PRIVATE_KEY }}
           source: "./univcert-web/build/*"
-          target: "/home/ec2-user/deploy"
+          target: "/home/ec2-user/deploy/front"
           strip_components: 2
 
       - name: Execute Server Init Script
@@ -106,11 +106,12 @@ jobs:
             cd deploy
             ls -al
             docker container stop existing univcert
+            docker container stop existing univcert-web
             docker build -t univcert-docker .
-            docker images
             docker run -d --rm -p 8080:8080 --name univcert univcert-docker
-#            docker run -d --name univcert -p 8080:8080 univcert-docker
-
+            cd front
+            docker build -t univcert-web .
+            docker run -d --rm -p 5000:5000 --name univcert-web univcert-web
 
     ## deploy to production
   #      - name: Deploy to prod
