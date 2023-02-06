@@ -52,7 +52,7 @@ jobs:
 
       - name: cd workDirectory in univcert- web
         run: |
-          cd univcert-web
+          cd ..
           ls -al
 
       - name: 📦️ Setup NodeJS 16
@@ -61,10 +61,13 @@ jobs:
           node-version: 16
 
       - name: Install modules
+        working-directory: ../univcert-web
         run: npm install
       - name: Run test codes
+        working-directory: ../univcert-web
         run: npm run test
       - name: 🔧 npm run build
+        working-directory: ../univcert-web
         run: npm run build
 
 
