@@ -50,6 +50,11 @@ jobs:
           chmod +x ./gradlew
           ./gradlew clean build -x test
 
+      - name: cd workDirectory in univcert- web
+        run: |
+          ls -al
+          cd ~
+
       - name: 📦️ Setup NodeJS 16
         uses: actions/setup-node@v3
         with:
