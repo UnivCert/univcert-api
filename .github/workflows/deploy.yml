@@ -104,7 +104,6 @@ jobs:
           envs: GITHUB_SHA
           script: |
             cd deploy
-            ls -al
             docker container stop univcert
             docker container stop univcert-web
             docker build -t univcert-docker .
