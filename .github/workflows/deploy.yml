@@ -93,7 +93,7 @@ jobs:
           target: "/home/ec2-user/deploy/front"
           strip_components: 2
 
-      - name: Execute Server Init Script
+      - name: Execute Server/Front Init Script
         uses: appleboy/ssh-action@master
         id: deploy-prod
         with:
