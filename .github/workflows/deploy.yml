@@ -59,13 +59,18 @@ jobs:
         working-directory: ./univcert-web
         run: |
           ls -al
+          pwd
+          whomai
+          cd ../
+          ls -al
+          pwd
           npm install
 
       - name: Run test codes
-        working-directory: ../univcert-web
+        working-directory: ./univcert-web
         run: npm run test
       - name: 🔧 npm run build
-        working-directory: ../univcert-web
+        working-directory: ./univcert-web
         run: npm run build
 
 
