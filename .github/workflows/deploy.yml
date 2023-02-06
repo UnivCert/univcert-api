@@ -66,9 +66,6 @@ jobs:
           ls -al
           pwd
           whoami
-          cd ../
-          ls -al
-          pwd
           npm install
 
       - name: Run test codes
