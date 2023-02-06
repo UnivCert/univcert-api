@@ -1,0 +1,3 @@
+[submodule "univcert-web"]
+	path = univcert-web
+	url = https://github.com/UnivCert/univcert-web.git
