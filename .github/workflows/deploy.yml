@@ -10,7 +10,15 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    env:
+      CI: false
+
     steps:
+      - name: 🗃️ Checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: recursive
+
       - name: Check out source code
         uses: actions/checkout@v2
       - name: 📦️ Setup JDK 11.0.12
@@ -47,7 +55,25 @@ jobs:
           chmod +x ./gradlew
           ./gradlew clean build -x test
 
-      - name: Deploy Prod use SCP
+      - name: 📦️ Setup NodeJS 16
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: Install modules
+        working-directory: ./univcert-web
+        run: |
+          ls -al
+          pwd
+          whoami
+          npm install
+
+      - name: 🔧 npm run build
+        working-directory: ./univcert-web
+        run: npm run build
+
+
+      - name: Deploy Prod use SCP [Spring]
         uses: appleboy/scp-action@master
         with:
           username: ec2-user
@@ -55,6 +81,16 @@ jobs:
           key: ${{ secrets.PRIVATE_KEY }}
           source: "./build/libs/*.jar"
           target: "/home/ec2-user/deploy"
+          strip_components: 2
+
+      - name: Deploy Prod use SCP [React]
+        uses: appleboy/scp-action@master
+        with:
+          username: ec2-user
+          host: ${{ secrets.HOST_DEV }}
+          key: ${{ secrets.PRIVATE_KEY }}
+          source: "./univcert-web/build/*"
+          target: "/home/ec2-user/deploy/front"
           strip_components: 2
 
       - name: Execute Server Init Script
@@ -68,12 +104,14 @@ jobs:
           envs: GITHUB_SHA
           script: |
             cd deploy
-            docker container stop existing univcert
+            ls -al
+            docker container stop univcert
+            docker container stop univcert-web
             docker build -t univcert-docker .
-            docker images
             docker run -d --rm -p 8080:8080 --name univcert univcert-docker
-#            docker run -d --name univcert -p 8080:8080 univcert-docker
-
+            cd front
+            docker build -t univcert-web .
+            docker run -d --rm -p 5000:5000 --name univcert-web univcert-web
 
     ## deploy to production
   #      - name: Deploy to prod
@@ -92,17 +130,3 @@ jobs:
   #                sudo docker pull sis000512/docker-spring:1.0
   #                docker-compose up -d
   #                docker image prune -f
-
-  current-time:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Get Current Time
-        uses: 1466587594/get-current-time@v2
-        id: current-time
-        with:
-          format: YYYY-MM-DDTHH:mm:ss
-          utcOffset: "+09:00"
-
-      - name: Print Current Time
-        run: echo "Current Time=${{steps.current-time.outputs.formattedTime}}"
-        shell: bash
