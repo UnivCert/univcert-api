@@ -110,22 +110,4 @@ jobs:
             docker run -d --rm -p 8080:8080 --name univcert univcert-docker
             cd front
             docker build -t univcert-web .
-            docker run -d --rm --name univcert-web univcert-web
-
-    ## deploy to production
-  #      - name: Deploy to prod
-  #        uses: appleboy/ssh-action@master
-  #        id: deploy-prod
-  #        with:
-  #            host: ${{ secrets.HOST_DEV }}
-  #            username: ec2-user
-  #            password: ${{ secrets.PRIVATE_KEY }}
-  #            port: 22
-  #            envs: GITHUB_SHA
-#              script: |
-  #                whoami
-  #                ls -al
-  #                sudo docker rm -f $(docker ps -qa)
-  #                sudo docker pull sis000512/docker-spring:1.0
-  #                docker-compose up -d
-  #                docker image prune -f
+            docker run -d --rm -it -p 3000:3000  --name univcert-web univcert-web
