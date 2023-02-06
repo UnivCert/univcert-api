@@ -105,8 +105,8 @@ jobs:
           script: |
             cd deploy
             ls -al
-            docker container stop existing univcert
-            docker container stop existing univcert-web
+            docker container stop univcert
+            docker container stop univcert-web
             docker build -t univcert-docker .
             docker run -d --rm -p 8080:8080 --name univcert univcert-docker
             cd front
