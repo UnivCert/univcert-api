@@ -32,7 +32,7 @@ public class CertController {
     @ApiDocumentResponse
     @ApiOperation(value = "메인홈에서 이 대학교 명이 서버에 존재하는 학교인지 체크")
     @PostMapping("/checkuniv")
-    public JSONObject sendMail(@RequestBody UnivDto univDto) {
+    public JSONObject checkUniv(@RequestBody UnivDto univDto) {
         return certService.validateUnivName(univDto.getUnivName());
     }
 
@@ -63,6 +63,13 @@ public class CertController {
     @PostMapping("/v1/certifiedlist")
     public JSONObject getCertifiedList(@RequestBody API_KEYDto dto) {
         return certService.getCertifiedList(dto.getKey());
+    }
+
+    @ApiDocumentResponse
+    @ApiOperation(value = "사용자를 위한 대학 명 체크", notes = "이것도 추가해야할듯 넌 신경안써도 되고 노션에추가해놓을게")
+    @PostMapping("/v1/checkuniv")
+    public JSONObject checkUnivName(@RequestBody UnivDto univDto) {
+        return certService.validateUnivName(univDto.getUnivName());
     }
 
 
