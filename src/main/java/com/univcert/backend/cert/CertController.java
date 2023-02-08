@@ -67,7 +67,7 @@ public class CertController {
 
     @ApiDocumentResponse
     @ApiOperation(value = "사용자를 위한 대학 명 체크", notes = "이것도 추가해야할듯 넌 신경안써도 되고 노션에추가해놓을게")
-    @PostMapping("/v1/checkuniv")
+    @PostMapping("/v1/check")
     public JSONObject checkUnivName(@RequestBody UnivDto univDto) {
         return certService.validateUnivName(univDto.getUnivName());
     }
