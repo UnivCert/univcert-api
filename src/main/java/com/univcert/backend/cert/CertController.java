@@ -37,7 +37,7 @@ public class CertController {
     }
 
     @ApiDocumentResponse
-    @ApiOperation(value = "대학 메일 인증 시작", notes = "프론트단에서 이메일형식으로 잘 보내는지 체킹해주셈")
+    @ApiOperation(value = "대학 메일 인증 시작", notes = "프론트단에서 이메일형식으로 잘 보내는지 체킹")
     @PostMapping("/v1/certify")
     public JSONObject sendMail(@RequestBody CertifyDto certifyDto) {
         MailForm mailForm = certService.checkErrorAndMakeForm(certifyDto);
