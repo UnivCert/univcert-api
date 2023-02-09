@@ -26,7 +26,7 @@ public class UserService {
     public JSONObject join(JoinDto dto) {
         Optional<User> existUser = userRepository.findByEmail(dto.getEmail());
         if(existUser.isPresent())
-            return PropertyUtil.responseMessage("이미 가입된 이메일입니다.");
+            return PropertyUtil.responseMessage("이미 가입된 이메일입니다..");
 
         User user = User.builder()
                 .email(dto.getEmail())
