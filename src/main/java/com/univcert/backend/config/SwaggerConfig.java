@@ -23,10 +23,7 @@ public class SwaggerConfig {
 
     private static final String API_NAME = "대학인증 API";
     private static final String API_VERSION = "0.0.1";
-    private static final String API_DESCRIPTION = "대학인증 API 명세서\n" +
-            "1.에러 코드 Response가 없는 API는 실패시 Error 로그 ";
-
-
+    private static final String API_DESCRIPTION = "대학인증 API 명세서\n";
 
     @Bean
     public Docket testApi(){
