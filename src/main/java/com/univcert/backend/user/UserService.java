@@ -28,6 +28,9 @@ public class UserService {
         if(existUser.isPresent())
             return PropertyUtil.responseMessage("이미 가입된 이메일입니다..");
 
+        if(dto.getTeam_name().isBlank())
+            return PropertyUtil.responseMessage("팀명을 올바르게 입력해주세요.");
+
         User user = User.builder()
                 .email(dto.getEmail())
                 .teamName(dto.getTeam_name())
@@ -51,6 +54,8 @@ public class UserService {
     public JSONObject login(JoinDto dto) {
         User user = userRepository.findByEmail(dto.getEmail())
                 .orElseThrow(() -> new UserNotFoundException("가입되지 않은 ID 입니다."));
+        if(!user.getTeamName().equals(dto.getTeam_name()))
+            throw new UserNotFoundException("소속명과 일치하지 않습니다.");
         UserDto userDto = new UserDto(user.getEmail(), user.getTeamName(), user.getAPI_KEY(), user.getQueryCount());
         return PropertyUtil.response(userDto);
     }
