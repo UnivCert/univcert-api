@@ -51,7 +51,7 @@
 ---
 
 ```
-[POST] https://[univcert.com/api/v1/certify](http://univcert.com/api/v1/certify) 요청 
+[POST] univcert.com/api/v1/certify 요청 
 이용자 메일 인증 시작 !
 
 {
