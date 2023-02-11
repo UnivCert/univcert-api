@@ -5,7 +5,7 @@
 > 전체 구성도
 > 
 
-![Group_224_(1)](https://user-images.githubusercontent.com/94730032/218089885-d7312e26-1f8a-42d8-b3a8-32327eb5cb78.svg)
+![Group_224_(1)](https://s3.us-west-2.amazonaws.com/secure.notion-static.com/856d10b3-c413-4600-9f51-29ca51664db8/Group_250.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20230211%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20230211T023712Z&X-Amz-Expires=86400&X-Amz-Signature=9df9ef4875d1bcb8a2217f16eef2643954037be7d8ce492f0cea8a26443bc59d&X-Amz-SignedHeaders=host&response-content-disposition=filename%3D%22Group%2520250.png%22&x-id=GetObject)
 
 > 실 적용 사례
 > 
