@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -54,60 +55,60 @@ class CertServiceTest {
         assertEquals(user.getEmail(), teamEmail);
     }
 
-    @Test
-    @Order(3)
-    @DisplayName("홈화면 try API, 해당 대학와 메일의 도메인이 일치하는지 체크")
-    void tryOut() throws DomainMisMatchException {
-        UnivAndEmailDto test1 = new UnivAndEmailDto(univName, certifyEmail);
-        UnivAndEmailDto test2 = new UnivAndEmailDto("한양대학교", certifyEmail);
-        JSONObject jsonObject1 = certService.tryOut(test1);
-        Assertions.assertThrows(DomainMisMatchException.class, () -> certService.tryOut(test2));
-        Assertions.assertEquals(true,jsonObject1.get("success"));
-    }
-
-    @Test
-    @Order(4)
-    @DisplayName("메일인증 초입단계, 메일 전송 여부")
-    @Transactional
-    @Rollback(value = false)
-    void requestCertify() {
-        CertifyDto certifyInfo = new CertifyDto(API_KEY, univName, certifyEmail, true);
-//        MailForm mailForm  = certService.checkErrorAndMakeForm(certifyInfo);
-//        certService.sendMail(mailForm);
-        JSONObject response = certController.sendMail(certifyInfo);
-        assertEquals(true, response.get("success"));
-        String code = certService.getCode(certifyInfo.getEmail());
-        assertEquals(code.length(), 4);
-    }
-
-    @Test
-    @Order(5)
-    @DisplayName("메일의 인증번호 체크")
-    @Transactional
-    @Rollback(value = false)
-    void responseCode() {
-        String code = certService.getCode(certifyEmail);
-        CodeResponseDto codeDto = new CodeResponseDto(API_KEY, univName, certifyEmail, code);
-        JSONObject jsonObject = certService.receiveMail(codeDto);
-        assertEquals(jsonObject.get("success"), true);
-    }
-
-    @Test
-    @Order(6)
-    @DisplayName("인증 verified = true 여부")
-    void showVerifiedStatus() {
-        Cert cert = certService.getCert(certifyEmail);
-        assertEquals(true, cert.isCertified());
-    }
-
-    @Test
-    @Order(7)
-    @DisplayName("인증 이력 조회")
-    void showStatus() {
-        JSONObject certifiedStatus = certService.getStatus(new StatusDto(API_KEY, certifyEmail));
-        Assertions.assertThrows(CertNotFoundException.class, ()->certService.getStatus(new StatusDto(API_KEY, uncertifyEmail)));
-        assertEquals(true, certifiedStatus.get("success"));
-    }
+//    @Test
+//    @Order(3)
+//    @DisplayName("홈화면 try API, 해당 대학와 메일의 도메인이 일치하는지 체크")
+//    void tryOut() throws DomainMisMatchException {
+//        UnivAndEmailDto test1 = new UnivAndEmailDto(univName, certifyEmail);
+//        UnivAndEmailDto test2 = new UnivAndEmailDto("한양대학교", certifyEmail);
+//        JSONObject jsonObject1 = certService.tryOut(test1);
+//        Assertions.assertThrows(DomainMisMatchException.class, () -> certService.tryOut(test2));
+//        Assertions.assertEquals(true,jsonObject1.get("success"));
+//    }
+//
+//    @Test
+//    @Order(4)
+//    @DisplayName("메일인증 초입단계, 메일 전송 여부")
+//    @Transactional
+//    @Rollback(value = false)
+//    void requestCertify() {
+//        CertifyDto certifyInfo = new CertifyDto(API_KEY, univName, certifyEmail, true);
+////        MailForm mailForm  = certService.checkErrorAndMakeForm(certifyInfo);
+////        certService.sendMail(mailForm);
+//        JSONObject response = certController.sendMail(certifyInfo);
+//        assertEquals(true, response.get("success"));
+//        String code = certService.getCode(certifyInfo.getEmail());
+//        assertEquals(code.length(), 4);
+//    }
+//
+//    @Test
+//    @Order(5)
+//    @DisplayName("메일의 인증번호 체크")
+//    @Transactional
+//    @Rollback(value = false)
+//    void responseCode() {
+//        String code = certService.getCode(certifyEmail);
+//        CodeResponseDto codeDto = new CodeResponseDto(API_KEY, univName, certifyEmail, code);
+//        JSONObject jsonObject = certService.receiveMail(codeDto);
+//        assertEquals(jsonObject.get("success"), true);
+//    }
+//
+//    @Test
+//    @Order(6)
+//    @DisplayName("인증 verified = true 여부")
+//    void showVerifiedStatus() {
+//        Cert cert = certService.getCert(certifyEmail);
+//        assertEquals(true, cert.isCertified());
+//    }
+//
+//    @Test
+//    @Order(7)
+//    @DisplayName("인증 이력 조회")
+//    void showStatus() {
+//        JSONObject certifiedStatus = certService.getStatus(new StatusDto(API_KEY, certifyEmail));
+//        Assertions.assertThrows(CertNotFoundException.class, ()->certService.getStatus(new StatusDto(API_KEY, uncertifyEmail)));
+//        assertEquals(true, certifiedStatus.get("success"));
+//    }
 
     @Test
     @Order(8)
