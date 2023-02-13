@@ -12,6 +12,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,9 +64,7 @@ public class CertService {
 
     private boolean validateUnivDomain(String email, String univName) {
         String domain = UnivMail.getDomain(univName);
-        if(email.contains(domain))
-            return true;
-        return false;
+        return email.contains(domain);
     }
 
     public JSONObject validateUnivName(String univName) {
@@ -157,15 +156,7 @@ public class CertService {
     public JSONObject getCertifiedList(String API_KEY) {
         User user = userRepository.findByAPI_KEYFetchCertList(API_KEY).orElseThrow(ApiNotFoundException::new);
         List<ResponseListForm> list = new ArrayList<>();
-        for (Cert cert : user.getCertList()) {
-            ResponseListForm responseListForm = ResponseListForm.builder()
-                    .email(cert.getEmail())
-                    .univName(cert.getUnivName())
-                    .certified_date(cert.getCreatedDate().toString())
-                    .count(cert.getCount())
-                    .certified(cert.isCertified()).build();
-            list.add(responseListForm);
-        }
+        user.getCertList().forEach(cert -> list.add(new ResponseListForm(cert)));
         return PropertyUtil.response(list);
     }
 }
