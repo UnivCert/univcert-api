@@ -10,11 +10,11 @@ import java.util.stream.Stream;
 
 public enum UnivMail {  /** 약 126개 **/
 
-    GACHON("가천대학교","gachon"), KANGWON("강원대학교","kangwon"), KONKUK("건국대학교","konkuk"), KKU("건국(글로컬)대학교","kku"),
+    GACHON("가천대학교","gachon"), KANGWON("강원대학교","kangwon"), KONKUK("건국대학교","konkuk"), KKU("건국대학교(글로컬)","kku"),
     GTEC("경기과학기술대학교","gtec"),KYONGGI("경기대학교","kyonggi"), KNU("경북대학교","knu"), GINUE("경인교육대학교","ginue"),
     KHU("경희대학교","khu"), KAYWON("계원예술대학교","kaywon"), KOREA("고려대학교","korea"), KW("광운대학교","kw"),
     KOOKMIN("국민대학교","kookmin"),DANKOOK("단국대학교","dankook"), DUKSUNG("덕성여자대학교","duksung"), DONGGUK("동국대학교","dongguk.edu"),
-    DONGGUKK("동국(경주)대학교","dongguk.ac"), DONGDUK("동덕여자","dongduk"),MJU("명지","mju"), MJC("명지전문","mjc"),
+    DONGGUKK("동국대학교(경주)","dongguk.ac"), DONGDUK("동덕여자대학교","dongduk"),MJU("명지대학교","mju"), MJC("명지전문대학교","mjc"),
     SOGANG("서강대학교","sogang"),SKUNIV("서경대학교","skuniv"), SEOULTECH("서울과학기술대학교","seoultech"), SNUE("서울교육대학교","snue"),
     SNU("서울대학교","snu"), UOS("서울시립대학교","uos"), SWU("서울여자대학교","swu"), SKKU("성균관대학교","skku"),
     SUNGSHIN("성신여자대학교","sungshin"),SJU("세종대학교","sju"), SOOK("숙명여자대학교","sookmyung"), SOONG("숭실대학교","soongsil"),
@@ -22,7 +22,7 @@ public enum UnivMail {  /** 약 126개 **/
     INU("인천대학교","inu"),ITC("인하공전대학교","itc"), INHA("인하대학교","itc"), JNU("전남대학교","jnu"),
     JBNU("전북대학교","jbnu"), CAU("중앙대학교","cau"), CHUNGBUK("충북대학교","chungbuk"), KNOU("한국방송통신대학교","knou"),
     KPU("한국산업기술대학교","kpu"),KARTS("한국예술종합대학교","karts"), HUFS("한국외국어대학교","hufs"), KNSU("한국체육대학교","knsu"),
-    HANYANG("한양대학교","hanyang"), ERICA("한양에리카대학교","hanyang"), HONGIK("홍익대학교","hongik"), DGIST("dgist","dgist"),
+    HANYANG("한양대학교","hanyang"), ERICA("한양대학교(ERICA)","hanyang"), HONGIK("홍익대학교","hongik"), DGIST("dgist","dgist"),
     GIST("gist","gist"),KAIST("카이스트","kaist"), POSTECH("포항공과대학교","postech"), UNIST("unist","unist"),
     KMU("계명대학교","kmu"), CHOSUN("조선대학교","chosun"), GNU("경상대학교","GNU"),DONGA("동아대학교","donga"),
     DAEGU("대구대학교","daegu"), DEU("동의대학교","deu"), CNU("충남대학교","cnu"),BUKYONG("부경대학교","bukyong"),
@@ -63,41 +63,5 @@ public enum UnivMail {  /** 약 126개 **/
 
     public String getName() {
         return name;
-    }
-
-    public String getDomain() {return domain;}
-
-//    public static JSONObject domainCertify(String univ, String email){
-//
-//    }
-
-    public static String changeUnivToMail(String mail){
-        UnivMail[] univMails = UnivMail.values();
-        for (UnivMail univMail : univMails) {
-            if(univMail.name.equals(mail))
-                return univMail.domain;
-        }
-        return "";
-    }
-    public static boolean certUniv(String univ, String mail){ //insi2000@mail.hongik.ac.kr
-        UnivMail[] univMails = UnivMail.values();
-        String[] domain = mail.split("@",2); // domain[1]에 메일 도메인 존재
-        System.out.println("체크: "+ domain[1]);
-        for (UnivMail univMail : univMails) {
-            System.out.println(univMail.name+" ");
-            if(domain[1].contains(univMail.domain) && univ.equals((univMail.name+"대학교")))
-                return true;
-        }
-        return false;
-    }
-
-
-    public static boolean needCheck(String univ){  //체크할 필요가 있는 대학인지?
-        UnivMail[] univMails = UnivMail.values();
-        for (UnivMail univMail : univMails) {
-            if(univ.equals(univMail.name+"대학교"))
-                return true;
-        }
-        return false;
     }
 }
