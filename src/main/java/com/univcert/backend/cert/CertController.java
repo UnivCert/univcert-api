@@ -72,6 +72,13 @@ public class CertController {
         return certService.validateUnivName(univDto.getUnivName());
     }
 
+    @ApiDocumentResponse
+    @ApiOperation(value = "현재 인증 된 유저목록 초기화", notes = "")
+    @PostMapping("/v1/clear")
+    public JSONObject clearList(@RequestBody API_KEYDto dto) {
+        return certService.clearList(dto.getKey());
+    }
+
 
     @ExceptionHandler(UnivNotFoundException.class)
     @ResponseStatus(HttpStatus.OK)

@@ -158,4 +158,11 @@ public class CertService {
         user.getCertList().forEach(cert -> list.add(new ResponseListForm(cert)));
         return PropertyUtil.response(list);
     }
+
+    @Transactional
+    public JSONObject clearList(String API_KEY) {
+        User user = userRepository.findByAPI_KEYFetchCertList(API_KEY).orElseThrow(ApiNotFoundException::new);
+        certRepository.deleteAll(user.getCertList());
+        return PropertyUtil.response(true);
+    }
 }
