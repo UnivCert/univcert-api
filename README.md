@@ -241,6 +241,25 @@ response (실패)
 
 ---
 
+```
+5/20 추가 !
+[Post] univcert.com/clear 요청
+현재 인증 된 유저목록 초기화
+
+request
+{
+  “key” : “부여받은 API KEY”
+}
+```
+
+```
+[Post] univcert.com/clear 응답
+response
+{
+  "success": true
+}
+```
+
 **상태코드 반환 표**
 
 | CODE | DESCRIPTION |
