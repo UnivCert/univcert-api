@@ -104,8 +104,8 @@ public class CertService {
         Optional<Cert> existCert = certRepository.findCertByEmail(dto.getEmail());
         if(existCert.isPresent()){
             Cert cert = existCert.get();
-            if(cert.getCount()>3)
-                throw new CountOverException("일일 시도 가능 횟수 초과입니다.");
+            if(cert.getCount()>20)
+                throw new CountOverException("일일 시도 가능 횟수(20회) 초과입니다.");
             if(cert.isCertified())
                 throw new AlreadyCertifiedException();
         }
