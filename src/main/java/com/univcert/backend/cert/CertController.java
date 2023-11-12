@@ -79,6 +79,13 @@ public class CertController {
         return certService.clearList(dto.getKey());
     }
 
+    @ApiDocumentResponse
+    @ApiOperation(value = "특정 유저 인증 여부 초기화", notes = "")
+    @PostMapping("/v1/clear/{email}")
+    public JSONObject clearList(@RequestBody API_KEYDto dto, @PathVariable("email") String email) {
+        return certService.clear(dto.getKey(), email);
+    }
+
 
     @ExceptionHandler(UnivNotFoundException.class)
     @ResponseStatus(HttpStatus.OK)

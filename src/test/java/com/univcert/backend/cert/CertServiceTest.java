@@ -28,9 +28,10 @@ class CertServiceTest {
     @Autowired CertService certService;
     @Autowired CertController certController;
     private User user;
-    private String API_KEY;
+    private String API_KEY = "df6ea145-4134-40a3-a298-764cd7d5d7bb";
     private static final String teamEmail = "sis000512@naver.com";
     private static final String certifyEmail = "insi2000@mail.hongik.ac.kr";
+    private static final String uncertifiedEmail = "sis000512@naver.com";
     private static final String uncertifyEmail = "thddlstj@mail.hanyang.ac.kr";
     private static final String teamName = "착송";
     private static final String univName = "홍익대학교";
@@ -46,14 +47,14 @@ class CertServiceTest {
 //        assertEquals(obj.get("success"), true);
 //    }
 
-    @Test
-    @Order(2)
-    @DisplayName("회원 저장 테스트")
-    void certifyStart() {
-        user = userService.findByEmail(teamEmail);
-        API_KEY = user.getAPI_KEY();
-        assertEquals(user.getEmail(), teamEmail);
-    }
+//    @Test
+//    @Order(2)
+//    @DisplayName("회원 저장 테스트")
+//    void certifyStart() {
+//        user = userService.findByEmail(teamEmail);
+//        API_KEY = user.getAPI_KEY();
+//        assertEquals(user.getEmail(), teamEmail);
+//    }
 
 //    @Test
 //    @Order(3)
@@ -72,9 +73,9 @@ class CertServiceTest {
 //    @Transactional
 //    @Rollback(value = false)
 //    void requestCertify() {
-//        CertifyDto certifyInfo = new CertifyDto(API_KEY, univName, certifyEmail, true);
-////        MailForm mailForm  = certService.checkErrorAndMakeForm(certifyInfo);
-////        certService.sendMail(mailForm);
+//        CertifyDto certifyInfo = new CertifyDto(API_KEY, univName, uncertifiedEmail, false);
+//        MailForm mailForm  = certService.checkErrorAndMakeForm(certifyInfo);
+//        certService.sendMail(mailForm);
 //        JSONObject response = certController.sendMail(certifyInfo);
 //        assertEquals(true, response.get("success"));
 //        String code = certService.getCode(certifyInfo.getEmail());
@@ -110,16 +111,21 @@ class CertServiceTest {
 //        assertEquals(true, certifiedStatus.get("success"));
 //    }
 
+//    @Test
+//    @Order(8)
+//    @DisplayName("인증된 사람 리스트 출력")
+//    void showList() {
+//        JSONObject certifiedList = certService.getCertifiedList(API_KEY);
+//        System.out.println(certifiedList.toJSONString());
+//        assertEquals(false,certifiedList.get("data").equals(Object.class));
+//    }
+
     @Test
-    @Order(8)
-    @DisplayName("인증된 사람 리스트 출력")
+    @Order(9)
+    @DisplayName("인증 이력 초기화 [유저 1명]")
     void showList() {
-        JSONObject certifiedList = certService.getCertifiedList(API_KEY);
-        System.out.println(certifiedList.toJSONString());
-        assertEquals(false,certifiedList.get("data").equals(Object.class));
+        certService.clear(API_KEY, certifyEmail);
     }
-
-
 
 
 }

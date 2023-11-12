@@ -104,8 +104,8 @@ public class CertService {
         Optional<Cert> existCert = certRepository.findCertByEmail(dto.getEmail());
         if(existCert.isPresent()){
             Cert cert = existCert.get();
-            if(cert.getCount()>3)
-                throw new CountOverException("일일 시도 가능 횟수 초과입니다.");
+            if(cert.getCount()>20)
+                throw new CountOverException("일일 시도 가능 횟수(20회) 초과입니다.");
             if(cert.isCertified())
                 throw new AlreadyCertifiedException();
         }
@@ -163,6 +163,18 @@ public class CertService {
     public JSONObject clearList(String API_KEY) {
         User user = userRepository.findByAPI_KEYFetchCertList(API_KEY).orElseThrow(ApiNotFoundException::new);
         certRepository.deleteAll(user.getCertList());
+        return PropertyUtil.response(true);
+    }
+
+    @Transactional
+    public JSONObject clear(String API_KEY, String email) {
+        User user = userRepository.findByAPI_KEYFetchCertList(API_KEY).orElseThrow(ApiNotFoundException::new);
+        Cert cert = certRepository.findCertByEmail(email)
+                .orElseThrow(CertNotFoundException::new);
+        if(cert.getUser().getId().equals(user.getId()))
+            certRepository.deleteById(cert.getId());
+        else
+            PropertyUtil.responseMessage("해당 API_KEY 보유자가 인증한 이메일이 아닙니다.");
         return PropertyUtil.response(true);
     }
 }
