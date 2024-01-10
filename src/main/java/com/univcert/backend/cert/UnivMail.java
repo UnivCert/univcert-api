@@ -25,7 +25,7 @@ public enum UnivMail {  /** 약 126개 **/
     HANYANG("한양대학교","hanyang"), ERICA("한양대학교(ERICA)","hanyang"), HONGIK("홍익대학교","hongik"), DGIST("dgist","dgist"),
     GIST("gist","gist"),KAIST("카이스트","kaist"), POSTECH("포항공과대학교","postech"), UNIST("unist","unist"),
     KMU("계명대학교","kmu"), CHOSUN("조선대학교","chosun"), GNU("경상대학교","GNU"),DONGA("동아대학교","donga"),
-    DAEGU("대구대학교","daegu"), DEU("동의대학교","deu"), CNU("충남대학교","cnu"),BUKYONG("부경대학교","bukyong"),
+    DAEGU("대구대학교","daegu"), DEU("동의대학교","deu"), CNU("충남대학교","cnu"),PUKYONG("부경대학교","pukyong"),
     ISCU("서울사이버대학교","iscu"), HYCU("한양사이버대학교","hycu"), WONKWANG("원광대학교","wonkwang"),KHCU("경희사이버대학교","khcu"),
     SDU("서울디지털대학교","sdu"), BU("백석대학교","bu"), BC("부천대학교","bc"),CU("대구가톨릭대학교","donga"),
     KYWOMAN("한양여자대학교","kywoman"), HOSEO("호서대학교","hoseo"), YJC("영진전문대학교","yjc"),KONGJU("공주대학교","kongju"),
