@@ -1,5 +1,8 @@
 # 🚀 Library for UnivCert API Service
 
+### 2025.07.01 서비스종료
+
+
 ### 🐣 초보자를 위한 UnivCert의 라이브러리 사용법은 [해당 사이트](https://github.com/in-seo/univcert)에 기재되어 있습니다.
 
 > 전체 구성도
